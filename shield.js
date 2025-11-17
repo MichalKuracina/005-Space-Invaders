@@ -12,6 +12,7 @@ class Shield {
     }
 
     draw() {
+        // console.log(this.x);
         fill(this.color);
         rect(this.x, this.y, this.width, this.height);
     }
