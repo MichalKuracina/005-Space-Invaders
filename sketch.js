@@ -6,13 +6,26 @@ let shields = [];
 let player;
 let bullets = [];
 
-function setup() {
+async function setup() {
+    let spritesheet = await loadImage("assets/invaders.png");
+    let spritesCollection = {
+        invader1: spritesheet.get(0, 0, 280, 185),
+        invader2: spritesheet.get(330, 0, 220, 195),
+        invader3: spritesheet.get(25, 291, 225, 180),
+    };
+
     createCanvas(800, 600);
 
     for (let index = 0; index < 8; index++) {
-        enemies.push(new Enemy(index * 60 + 100, 40));
-        enemies.push(new Enemy(index * 60 + 100, 100));
-        enemies.push(new Enemy(index * 60 + 100, 160));
+        enemies.push(
+            new Enemy(index * 60 + 100, 40, 4, spritesCollection.invader1)
+        );
+        enemies.push(
+            new Enemy(index * 60 + 100, 100, 3, spritesCollection.invader2)
+        );
+        enemies.push(
+            new Enemy(index * 60 + 100, 160, 2, spritesCollection.invader3)
+        );
     }
 
     addShields();
@@ -139,7 +152,10 @@ function checkCollisions() {
                 bullets[k].x <= enemies[l].x + enemies[l].size
             ) {
                 explosions.push(new Explosion(bullets[k].x, bullets[k].y));
-                enemies.splice(l, 1);
+                enemies[l].health -= 1;
+                if (enemies[l].health <= 0) {
+                    enemies.splice(l, 1);
+                }
                 bullets.splice(k, 1);
                 return;
             }
@@ -208,7 +224,7 @@ function addShields() {
 }
 
 function dropBomb() {
-    if (frameCount % 60 === 0) {
+    if (frameCount % 35 === 0) {
         let randomEnemy = random(enemies);
         // randomEnemy = enemies[5]; // for testing purposes
         if (isLowestRow(randomEnemy)) {

@@ -1,15 +1,17 @@
 class Enemy {
-    constructor(x, y) {
+    constructor(x, y, health, sprite) {
         this.x = x;
         this.y = y;
         this.size = 40;
         this.color = "white";
         this.direction = 1;
         this.step = 0;
+        this.health = health;
+        this.sprite = sprite;
     }
 
     update() {
-        if (frameCount % 50 === 0) {
+        if (frameCount % 90 === 0) {
             if (this.step == 4) {
                 this.y += this.size;
                 this.step = 0;
@@ -25,7 +27,8 @@ class Enemy {
     }
 
     draw() {
-        fill(this.color);
-        rect(this.x, this.y, this.size, this.size);
+        // fill(this.color);
+        // rect(this.x, this.y, this.size, this.size);
+        image(this.sprite, this.x, this.y, this.size, this.size);
     }
 }
